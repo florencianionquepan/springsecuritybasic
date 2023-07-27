@@ -1,10 +1,17 @@
 package com.udemycourse.springsecuritybasic.config;
 
+import org.hibernate.boot.model.relational.Database;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.password.NoOpPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.provisioning.JdbcUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
+
+import javax.sql.DataSource;
 
 @Configuration
 public class ProjectSecurityConfig {
@@ -17,5 +24,16 @@ public class ProjectSecurityConfig {
         .formLogin(Customizer.withDefaults())
         .httpBasic(Customizer.withDefaults());
         return http.build();
+    }
+
+    @Bean
+    public UserDetailsService userDetailsService(DataSource datasource){
+        return new JdbcUserDetailsManager(datasource);
+    }
+
+    @Bean
+    //por ahora las voy a almacenar en tezto plano
+    public PasswordEncoder passwordEncoder(){
+        return NoOpPasswordEncoder.getInstance();
     }
 }
