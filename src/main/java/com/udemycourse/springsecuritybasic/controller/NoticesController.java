@@ -23,6 +23,7 @@ public class NoticesController {
         List<Notice> notices = noticeRepository.findAllActiveNotices();
         if (notices != null ) {
             return ResponseEntity.ok()
+                    //le digo al browser por los sig. 60 seg. no invocar notices API
                     .cacheControl(CacheControl.maxAge(60, TimeUnit.SECONDS))
                     .body(notices);
         }else {
