@@ -1,6 +1,7 @@
 package com.udemycourse.springsecuritybasic.config;
 
 import com.udemycourse.springsecuritybasic.filter.AuthoritiesLoggingAfterFilter;
+import com.udemycourse.springsecuritybasic.filter.AuthoritiesLoggingAtFilter;
 import com.udemycourse.springsecuritybasic.filter.CsrfCookieFilter;
 import com.udemycourse.springsecuritybasic.filter.RequestValidationBeforeFilter;
 import jakarta.servlet.http.HttpServletRequest;
@@ -56,6 +57,7 @@ public class ProjectSecurityConfig {
                 .addFilterAfter(new CsrfCookieFilter(), BasicAuthenticationFilter.class)
                 .addFilterBefore(new RequestValidationBeforeFilter(),BasicAuthenticationFilter.class)
                 .addFilterAfter(new AuthoritiesLoggingAfterFilter(), BasicAuthenticationFilter.class)
+                .addFilterAt(new AuthoritiesLoggingAtFilter(), BasicAuthenticationFilter.class)
             .authorizeHttpRequests((requests)->requests
                     .requestMatchers("/myAccount","/myLoans","/myCards").hasRole("USER")
                     .requestMatchers("/myBalance").hasAnyRole("USER","ADMIN")
