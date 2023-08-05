@@ -1,6 +1,7 @@
 package com.udemycourse.springsecuritybasic.config;
 
 import com.udemycourse.springsecuritybasic.filter.CsrfCookieFilter;
+import com.udemycourse.springsecuritybasic.filter.RequestValidationBeforeFilter;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.context.annotation.Bean;
@@ -52,6 +53,7 @@ public class ProjectSecurityConfig {
         .csrf((csrf) -> csrf.csrfTokenRequestHandler(requestHandler).ignoringRequestMatchers("/contact","/register")
                 .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse()))
                 .addFilterAfter(new CsrfCookieFilter(), BasicAuthenticationFilter.class)
+                .addFilterBefore(new RequestValidationBeforeFilter(),BasicAuthenticationFilter.class)
             .authorizeHttpRequests((requests)->requests
                     .requestMatchers("/myAccount","/myLoans","/myCards").hasRole("USER")
                     .requestMatchers("/myBalance").hasAnyRole("USER","ADMIN")
