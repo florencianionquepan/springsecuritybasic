@@ -53,6 +53,7 @@ public class ProjectSecurityConfig {
                 .addFilterAfter(new AuthoritiesLoggingAfterFilter(), BasicAuthenticationFilter.class)
                 .addFilterAt(new AuthoritiesLoggingAtFilter(), BasicAuthenticationFilter.class)
                 .addFilterAfter(new JWTTokenGenerationFilter(), BasicAuthenticationFilter.class)
+                .addFilterBefore(new JWTTokenValidationFilter(), BasicAuthenticationFilter.class)
             .authorizeHttpRequests((requests)->requests
                     .requestMatchers("/myAccount","/myLoans","/myCards").hasRole("USER")
                     .requestMatchers("/myBalance").hasAnyRole("USER","ADMIN")
